@@ -23,7 +23,7 @@ def pregunta_01():
 
     """
     filas = len(tbl0)
-return filas
+    return filas
 
 
 def pregunta_02():
@@ -249,4 +249,4 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-     return((pd.merge(tbl2,tbl0).groupby("_c1").sum()["_c5b"]))
+    return ((pd.merge(tbl2,tbl0).groupby("_c1").sum()["_c5b"]))
