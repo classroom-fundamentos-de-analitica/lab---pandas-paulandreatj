@@ -22,7 +22,8 @@ def pregunta_01():
     40
 
     """
-    return
+    filas = len(tbl0)
+    return filas
 
 
 def pregunta_02():
@@ -33,7 +34,8 @@ def pregunta_02():
     4
 
     """
-    return
+    columnas = tbl0.shape
+    return columnas[1]
 
 
 def pregunta_03():
@@ -50,7 +52,8 @@ def pregunta_03():
     Name: _c1, dtype: int64
 
     """
-    return
+    registros = tbl0.groupby('_c1')['_c1'].count()
+    return registros
 
 
 def pregunta_04():
@@ -65,7 +68,8 @@ def pregunta_04():
     E    4.785714
     Name: _c2, dtype: float64
     """
-    return
+    promedio = tbl0.groupby('_c1')['_c2'].mean()
+    return promedio
 
 
 def pregunta_05():
@@ -82,7 +86,8 @@ def pregunta_05():
     E    9
     Name: _c2, dtype: int64
     """
-    return
+    valorMax = tbl0.groupby('_c1')['_c2'].max()
+    return valorMax
 
 
 def pregunta_06():
@@ -94,7 +99,10 @@ def pregunta_06():
     ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
     """
-    return
+    unicos = tbl1['_c4'].unique()
+    unicos = list(unicos)
+    unicos.sort()
+    return [letra.upper() for letra in unicos]
 
 
 def pregunta_07():
@@ -110,7 +118,8 @@ def pregunta_07():
     E    67
     Name: _c2, dtype: int64
     """
-    return
+    suma = tbl0.groupby('_c1')['_c2'].sum()
+    return suma
 
 
 def pregunta_08():
@@ -128,7 +137,8 @@ def pregunta_08():
     39   39   E    5  1998-01-26    44
 
     """
-    return
+    tbl0['suma'] = tbl0['_c0'] + tbl0['_c2']
+    return tbl0
 
 
 def pregunta_09():
@@ -146,7 +156,8 @@ def pregunta_09():
     39   39   E    5  1998-01-26  1998
 
     """
-    return
+    tbl0['year'] = tbl0['_c3'].map(lambda x: x.split('-')[0])
+    return tbl0
 
 
 def pregunta_10():
@@ -163,7 +174,15 @@ def pregunta_10():
     3   D                  1:2:3:5:5:7
     4   E  1:1:2:3:3:4:5:5:5:6:7:8:8:9
     """
-    return
+    letras = sorted(tbl0._c1.unique())
+    data = {"_c2": []}
+    for letra in letras:
+        valoresC2 = sorted(tbl0[tbl0._c1 == letra]._c2)
+        listaC2 = [str(i) for i in valoresC2]
+        valorString = ":".join(listaC2)
+        data["_c2"] = data["_c2"] + [valorString]
+    result = pd.DataFrame(data, index=pd.Series(letras, name="_c1"))
+    return result
 
 
 def pregunta_11():
@@ -182,7 +201,14 @@ def pregunta_11():
     38   38      d,e
     39   39    a,d,f
     """
-    return
+    numeros = tbl1._c0.unique()
+    data = {"_c0": numeros, "_c4": []}
+    for numero in numeros:
+        valores = sorted(tbl1[tbl1._c0 == numero]._c4)
+        valoresString = ",".join(valores)
+        data["_c4"] += [valoresString]
+    result = pd.DataFrame(data)
+    return result
 
 
 def pregunta_12():
@@ -200,7 +226,13 @@ def pregunta_12():
     38   38                    eee:0,fff:9,iii:2
     39   39                    ggg:3,hhh:8,jjj:5
     """
-    return
+    tbl2['_c5b'] = tbl2['_c5b'].apply(lambda x: str(x))
+    tbl2['_c5'] = tbl2[['_c5a', '_c5b']].apply(':'.join, axis=1)
+    col0 = sorted(list(tbl2['_c0'].unique()))
+    col5 = tbl2.groupby('_c0')['_c5'].apply(lambda x: ','.join(e for e in sorted(x)))
+
+    result = pd.DataFrame({'_c0': col0, "_c5": list(col5.array)})
+    return result
 
 
 def pregunta_13():
@@ -217,4 +249,4 @@ def pregunta_13():
     E    275
     Name: _c5b, dtype: int64
     """
-    return
+    return ((pd.merge(tbl2,tbl0).groupby("_c1").sum()["_c5b"]))
