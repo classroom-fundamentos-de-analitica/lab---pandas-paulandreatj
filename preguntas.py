@@ -204,7 +204,7 @@ def pregunta_11():
     numeros = tbl1._c0.unique()
     data = {"_c0": numeros, "_c4": []}
     for numero in numeros:
-        valores = sorted(tbl1[tbl1._c0 == num]._c4)
+        valores = sorted(tbl1[tbl1._c0 == numero]._c4)
         valoresString = ",".join(valores)
         data["_c4"] += [valoresString]
     result = pd.DataFrame(data)
